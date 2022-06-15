@@ -10,7 +10,7 @@ import (
 const EndPoint = "https://aeroapi.flightaware.com/aeroapi/"
 
 // ErrNotFound -- the basic error when we fail to return data
-var ErrNotFound = errors.New("cannot fetch fetch at this time. please try again")
+var ErrNotFound = errors.New("cannot fetch at this time. please try again")
 
 // Check -- used to check any error values
 func Check(err error) {

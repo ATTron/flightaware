@@ -18,7 +18,8 @@ var attempts = 0
 func GetFlight(flightNum string) Flight {
 	flightEP := util.Join("flights/", flightNum)
 	returnFlight := cleanData(&flightEP)
-	return returnFlight[0]
+
+	return returnFlight.Flights[0]
 }
 
 // fetchData - go and get the latest train information
@@ -53,11 +54,11 @@ attempt:
 }
 
 // cleanData - massage the data out
-func cleanData(flightNum *string) []Flight {
+func cleanData(flightNum *string) Response {
 	content, err := fetchData(flightNum)
 	util.Check(err)
 
-	returnFlight := []Flight{}
+	returnFlight := Response{}
 
 	err = json.Unmarshal([]byte(content), &returnFlight)
 	util.Check(err)

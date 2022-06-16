@@ -15,11 +15,11 @@ var apiKey = os.Getenv("API_KEY")
 var attempts = 0
 
 // GetFlight -- return data about flight
-func GetFlight(flightNum string) Flight {
+func GetFlight(flightNum string) []Flight {
 	flightEP := util.Join("flights/", flightNum)
 	returnFlight := cleanData(&flightEP)
 
-	return returnFlight.Flights[0]
+	return returnFlight.Flights
 }
 
 // fetchData - go and get the latest train information

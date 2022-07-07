@@ -22,7 +22,7 @@ func GetFlight(flightNum string) []Flight {
 	return returnFlight.Flights
 }
 
-// fetchData - go and get the latest train information
+// fetchData - go and get the latest flight information
 func fetchData(flightNum *string) (string, error) {
 	client := http.Client{}
 	content := ""
@@ -65,7 +65,7 @@ func cleanData(flightNum *string) Response {
 	return returnFlight
 }
 
-// WriteJSON - write out to file called 'av.json'
+// writeJSON - write out to file called 'av.json'
 func writeJSON(content string) {
 	f, err := os.Create("av.json")
 	util.Check(err)

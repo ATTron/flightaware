@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/ATTron/flightaware/util"
 	// autoload the .env file
@@ -13,13 +14,35 @@ import (
 
 var apiKey = os.Getenv("API_KEY")
 var attempts = 0
+var layout = "2006-01-02T15:04:05Z"
 
-// GetFlight -- return data about flight
+// GetFlight return all data about certain flight number
 func GetFlight(flightNum string) []Flight {
 	flightEP := util.Join("flights/", flightNum)
 	returnFlight := cleanData(&flightEP)
 
 	return returnFlight.Flights
+}
+
+// GetFlightWithTime return a (hopefully) single flight for a timeframe
+func GetFlightWithTime(flightNum string, flightTime string) []Flight {
+	convertedFlightTime, endTime := convertTime(flightTime)
+	fTime := util.Join("flights/", flightNum, "?start=", convertedFlightTime, "&end=", endTime)
+	returnFlight := cleanData(&fTime)
+
+	return returnFlight.Flights
+}
+
+func convertTime(timestamp string) (string, string) {
+	ts, err := time.Parse(layout, timestamp)
+	if err != nil {
+		return "ERROR CONVERTING TIMESTAMP", "ERROR"
+	}
+	loc, _ := time.LoadLocation("UTC")
+	cft := ts.In(loc)
+	eft := cft.AddDate(0, 0, 1)
+
+	return cft.Format("01-02-2006"), eft.Format("01-02-2006")
 }
 
 // fetchData - go and get the latest flight information
